@@ -19,6 +19,7 @@
 @property (nonatomic, strong) UITextField *firstResponderTextField;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (nonatomic, assign) BOOL isInSignInMode;
+@property (weak, nonatomic) IBOutlet UITableView *createAcctTableView;
 
 @end
 
@@ -30,8 +31,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.tableView.scrollEnabled = NO;
-    self.tableView.layer.opacity = 0.0f;
+    
     
     CAGradientLayer *gradient = [CAGradientLayer layer];
     gradient.frame = self.view.bounds;
@@ -42,6 +42,13 @@
     
     self.tableView.layer.borderColor = [[UIColor whiteColor]CGColor];
     self.tableView.layer.borderWidth = 1.0f;
+    self.tableView.scrollEnabled = NO;
+    self.tableView.layer.opacity = 0.0f;
+    
+    self.createAcctTableView.layer.borderColor = [[UIColor whiteColor]CGColor];
+    self.createAcctTableView.layer.borderWidth = 1.0f;
+    self.createAcctTableView.scrollEnabled = NO;
+    self.createAcctTableView.layer.opacity = 0.0f;
     
     self.signInButton.layer.borderColor = [[UIColor whiteColor]CGColor];
     self.signInButton.layer.borderWidth = 1.0f;
@@ -68,7 +75,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return (tableView == self.tableView) ? 2 : 3;
 }
 - (IBAction)cancelTapped:(id)sender {
     if(self.isInSignInMode){
@@ -79,6 +86,8 @@
 
 - (IBAction)signInTapped:(id)sender {
     [self startAnimations:NO];
+}
+- (IBAction)signUpTapped:(id)sender {
 }
 
 -(void)startAnimations:(BOOL)shouldReverse
@@ -136,11 +145,22 @@
         cell = [[TextFieldCell alloc]init];
 
     if(indexPath.row == 0){
-        cell.cellTextField.placeholder = @"email";
-        cell.cellTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-        self.firstResponderTextField = cell.cellTextField;
+        if(tableView == self.tableView){
+            cell.cellTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+            self.firstResponderTextField = cell.cellTextField;
+        }else{
+            cell.createAccountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"full name" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+            self.firstResponderTextField = cell.createAccountTextField;
+        }
     }else if(indexPath.row == 1){
-        cell.cellTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        if(tableView == self.tableView){
+            cell.cellTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        }else{
+            cell.createAccountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+        }
+    }else{
+        cell.createAccountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
+   
     }
     
     

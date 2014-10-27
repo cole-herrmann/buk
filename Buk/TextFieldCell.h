@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TextFieldCell : UITableViewCell
+@property (weak, nonatomic) IBOutlet UITextField *createAccountTextField;
 @property (weak, nonatomic) IBOutlet UITextField *cellTextField;
 @end

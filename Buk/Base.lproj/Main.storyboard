@@ -49,6 +49,9 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="signUpTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="RQs-Ug-o6c"/>
+                                </connections>
                             </button>
                             <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sLw-gF-jm6">
                                 <rect key="frame" x="46" y="471" width="508" height="48"/>
@@ -60,6 +63,20 @@
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnB-JP-fy8">
+                                <rect key="frame" x="544" y="45" width="32" height="32"/>
+                                <color key="backgroundColor" red="0.99963563680648804" green="1" blue="0.99975317716598511" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="Eer-3J-vko"/>
+                                    <constraint firstAttribute="height" constant="32" id="vI4-NI-Knn"/>
+                                </constraints>
+                                <state key="normal" image="cancel">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="cancelTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YwU-xC-iQ4"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" tag="10" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="48" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="lLk-41-BrW">
                                 <rect key="frame" x="46" y="160" width="508" height="96"/>
@@ -101,20 +118,45 @@
                                     <outlet property="delegate" destination="vXZ-lx-hvc" id="Ya4-Lz-vpH"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnB-JP-fy8">
-                                <rect key="frame" x="544" y="45" width="32" height="32"/>
-                                <color key="backgroundColor" red="0.99963563680648804" green="1" blue="0.99975317716598511" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="48" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="iFD-AB-RFh">
+                                <rect key="frame" x="46" y="160" width="508" height="144"/>
+                                <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="32" id="Eer-3J-vko"/>
-                                    <constraint firstAttribute="height" constant="32" id="vI4-NI-Knn"/>
+                                    <constraint firstAttribute="height" constant="144" id="LEo-QB-Vow"/>
                                 </constraints>
-                                <state key="normal" image="cancel">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="TextFieldCell" id="OgY-0m-QEA" customClass="TextFieldCell">
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OgY-0m-QEA" id="Fu2-Pf-EXa">
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8oC-Ng-fHA">
+                                                    <rect key="frame" x="8" y="12" width="492" height="29"/>
+                                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <textInputTraits key="textInputTraits"/>
+                                                </textField>
+                                            </subviews>
+                                            <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <constraints>
+                                                <constraint firstItem="8oC-Ng-fHA" firstAttribute="leading" secondItem="Fu2-Pf-EXa" secondAttribute="leadingMargin" id="c2o-AI-kt8"/>
+                                                <constraint firstItem="8oC-Ng-fHA" firstAttribute="trailing" secondItem="Fu2-Pf-EXa" secondAttribute="trailingMargin" id="d2S-Ui-hs6"/>
+                                                <constraint firstItem="8oC-Ng-fHA" firstAttribute="top" secondItem="Fu2-Pf-EXa" secondAttribute="topMargin" constant="4" id="xKa-Wj-V82"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="8oC-Ng-fHA" secondAttribute="bottom" constant="-2" id="zNr-xO-sZJ"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <outlet property="createAccountTextField" destination="8oC-Ng-fHA" id="zO9-po-66V"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
-                                    <action selector="cancelTapped:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="YwU-xC-iQ4"/>
+                                    <outlet property="dataSource" destination="vXZ-lx-hvc" id="IzW-Oz-jsH"/>
+                                    <outlet property="delegate" destination="vXZ-lx-hvc" id="CG8-XB-1fy"/>
                                 </connections>
-                            </button>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="0.10980392156862745" green="0.20000000000000001" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -124,9 +166,11 @@
                             <constraint firstItem="uoi-5L-U68" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="30" id="6NI-6R-J8w"/>
                             <constraint firstItem="qnB-JP-fy8" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="25" id="71e-Op-inE"/>
                             <constraint firstItem="Bib-nf-MiB" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="30" id="7Da-uV-fGG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iFD-AB-RFh" secondAttribute="trailing" constant="30" id="8Wu-OZ-Rtm"/>
                             <constraint firstItem="lLk-41-BrW" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="30" id="ARE-ZI-7yS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lLk-41-BrW" secondAttribute="trailing" constant="30" id="C52-sD-cQc"/>
                             <constraint firstItem="qnB-JP-fy8" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" constant="-8" id="H9N-Ok-9GH"/>
+                            <constraint firstItem="iFD-AB-RFh" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="140" id="Iuj-8d-Q6X"/>
                             <constraint firstItem="sLw-gF-jm6" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="30" id="JWY-KG-foY"/>
                             <constraint firstAttribute="trailingMargin" secondItem="uoi-5L-U68" secondAttribute="trailing" constant="30" id="S0E-mK-RXl"/>
                             <constraint firstAttribute="centerX" secondItem="Pyd-Hu-ov6" secondAttribute="centerX" constant="-0.5" id="YNe-bc-YZc"/>
@@ -134,6 +178,7 @@
                             <constraint firstItem="lLk-41-BrW" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="140" id="nLC-gw-gFI"/>
                             <constraint firstItem="sLw-gF-jm6" firstAttribute="top" secondItem="uoi-5L-U68" secondAttribute="bottom" constant="8" id="rF3-Up-8bA"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="sLw-gF-jm6" secondAttribute="bottom" constant="81" id="ubH-bm-JYq"/>
+                            <constraint firstItem="iFD-AB-RFh" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="30" id="xPt-PO-D79"/>
                             <constraint firstItem="Pyd-Hu-ov6" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="140" id="xoO-AI-yuP"/>
                         </constraints>
                         <variation key="default">
@@ -145,6 +190,7 @@
                     <connections>
                         <outlet property="bukLabel" destination="Pyd-Hu-ov6" id="7aR-vo-IYF"/>
                         <outlet property="closeButton" destination="qnB-JP-fy8" id="NI4-JD-XNk"/>
+                        <outlet property="createAcctTableView" destination="iFD-AB-RFh" id="RKS-k2-R96"/>
                         <outlet property="signInButton" destination="Bib-nf-MiB" id="Sqd-aI-fMJ"/>
                         <outlet property="signUpButton" destination="uoi-5L-U68" id="GGw-df-rtH"/>
                         <outlet property="tableView" destination="lLk-41-BrW" id="Z8T-V1-dnV"/>
@@ -152,7 +198,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="263" y="461"/>
+            <point key="canvasLocation" x="263" y="455"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="BOw-ch-cD7">
@@ -171,23 +217,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TE2-8q-bkI" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1308" y="639"/>
-        </scene>
-        <!--View Controller-->
-        <scene sceneID="VGx-sh-a10">
-            <objects>
-                <viewController id="U3c-fx-7Z9" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Vj6-7f-PTc"/>
-                        <viewControllerLayoutGuide type="bottom" id="4Oj-UE-KJZ"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="2an-rJ-jAe">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="q71-FD-4JD" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
         </scene>
     </scenes>
     <resources>
