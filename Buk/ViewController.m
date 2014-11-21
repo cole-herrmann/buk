@@ -8,18 +8,21 @@
 
 #import "ViewController.h"
 #import "TextFieldCell.h"
+#import "BuyOrSellViewController.h"
 #import <POP/POP.h>
 
-@interface ViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface ViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *bukLabel;
 @property (weak, nonatomic) IBOutlet UIButton *signInButton;
 @property (weak, nonatomic) IBOutlet UIButton *signUpButton;
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UITextField *firstResponderTextField;
-@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (nonatomic, assign) BOOL isInSignInMode;
-@property (weak, nonatomic) IBOutlet UITableView *createAcctTableView;
+@property (nonatomic, assign) BOOL isInSignUpMode;
+@property (weak, nonatomic) IBOutlet UIImageView *bukView;
+@property (weak, nonatomic) IBOutlet UIView *signInView;
+
+@property (weak, nonatomic) IBOutlet UITextField *signInEmail;
+@property (weak, nonatomic) IBOutlet UITextField *signInPassword;
 
 @end
 
@@ -30,141 +33,180 @@
 }
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     
-    
-    CAGradientLayer *gradient = [CAGradientLayer layer];
-    gradient.frame = self.view.bounds;
-    UIColor *darkBlue = [UIColor colorWithRed:0.129 green:0.231 blue:0.325 alpha:1];
-    UIColor *darkRed = [UIColor colorWithRed:0.969 green:0.192 blue:0.298 alpha:1];
-    gradient.colors = [NSArray arrayWithObjects:(id)[darkBlue CGColor], (id)[darkRed CGColor], nil];
-    [self.view.layer insertSublayer:gradient atIndex:0];
-    
-    self.tableView.layer.borderColor = [[UIColor whiteColor]CGColor];
-    self.tableView.layer.borderWidth = 1.0f;
-    self.tableView.scrollEnabled = NO;
-    self.tableView.layer.opacity = 0.0f;
-    
-    self.createAcctTableView.layer.borderColor = [[UIColor whiteColor]CGColor];
-    self.createAcctTableView.layer.borderWidth = 1.0f;
-    self.createAcctTableView.scrollEnabled = NO;
-    self.createAcctTableView.layer.opacity = 0.0f;
-    
-    self.signInButton.layer.borderColor = [[UIColor whiteColor]CGColor];
-    self.signInButton.layer.borderWidth = 1.0f;
+    self.signInButton.layer.cornerRadius = 15.0f;
 
-    self.signUpButton.layer.borderColor = [[UIColor whiteColor]CGColor];
-    self.signUpButton.layer.borderWidth = 1.0f;
+    self.signUpButton.layer.cornerRadius = 15.0f;
     
-    self.closeButton.layer.opacity = 0.0f;
-   
-    initialBukY = self.bukLabel.frame.origin.y;
-    initialSignInY = self.signInButton.frame.origin.y;
+    self.signInView.layer.opacity = 0;
+    
+    //
+////    initialBukY = self.bukLabel.frame.origin.y;
+//    initialSignInY = self.signInButton.frame.origin.y;
 }
 
--(void)viewWillLayoutSubviews
-{
-    [super viewWillLayoutSubviews];
-    
-}
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return (tableView == self.tableView) ? 2 : 3;
-}
 - (IBAction)cancelTapped:(id)sender {
     if(self.isInSignInMode){
         self.isInSignInMode = NO;
         [self startAnimations:YES];
     }
+    
+    if(self.isInSignUpMode){
+        self.isInSignUpMode = NO;
+        [self startAnimationsSignUp:YES];
+    }
 }
 
 - (IBAction)signInTapped:(id)sender {
-    [self startAnimations:NO];
+//    if(self.isInSignInMode){
+//        NSString * storyboardName = @"Main";
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
+//        UIViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"BuyOrSellVC"];
+//        [self.navigationController showViewController:vc sender:self];
+//    }else{
+        [self startAnimations:NO];
+//    }
 }
 - (IBAction)signUpTapped:(id)sender {
+//    if(self.isInSignUpMode){
+//        NSString * storyboardName = @"Main";
+//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:storyboardName bundle: nil];
+//        UIViewController * vc = [storyboard instantiateViewControllerWithIdentifier:@"BuyOrSellVC"];
+//        [self.navigationController showViewController:vc sender:self];
+//    }else{
+        [self startAnimationsSignUp:NO];
+//    }
 }
+
+//animations for signin
 
 -(void)startAnimations:(BOOL)shouldReverse
 {
-    if(!self.isInSignInMode){
-        [self animateBookLabel:shouldReverse];
-        if(shouldReverse)
-            [self fadeInTableViewAnimation:shouldReverse];
+    NSString *signInAnim = @"signInAnim";
+    
+    [self.signInButton.layer removeAnimationForKey:signInAnim];
+
+    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerTranslationY];
+    
+    positionAnimation.toValue = (shouldReverse) ? @0 : @-180;
+    positionAnimation.velocity = @5;
+    positionAnimation.springBounciness = 10;
+   
+    [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
+        if(!shouldReverse)
+            [self fadeInTableViewAnimation: shouldReverse isSignUp:NO];
         
-        POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-        positionAnimation.toValue = (shouldReverse) ? @(self.signUpButton.frame.origin.y - self.signInButton.frame.size.height/2 - 10) : @(CGRectGetMaxY(self.tableView.frame) + 34);
-        positionAnimation.velocity = @5;
-        positionAnimation.springBounciness = 14;
-        [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
-            if(!shouldReverse)
-                [self fadeInTableViewAnimation: shouldReverse];
-            self.isInSignInMode = (shouldReverse) ? NO : YES;
-        }];
-        [self.signInButton.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
-    }
+        self.isInSignInMode = (shouldReverse) ? NO : YES;
+    }];
+    
+    [self animateBookLabel:shouldReverse];
+    [self.signInButton.layer pop_addAnimation:positionAnimation forKey:signInAnim];
+
 }
+
+//-(void)startAnimations:(BOOL)shouldReverse
+//{
+//    if(!self.isInSignInMode){
+//        [self animateBookLabel:shouldReverse];
+//        
+//        if(shouldReverse)
+//            [self fadeInTableViewAnimation:shouldReverse isSignUp:NO];
+//        
+//        POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerTranslationY];
+//        
+//        positionAnimation.toValue = (shouldReverse) ? @0 : @-180;
+//        positionAnimation.velocity = @5;
+//        positionAnimation.springBounciness = 10;
+//        
+//        [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
+//            if(!shouldReverse)
+//                [self fadeInTableViewAnimation: shouldReverse isSignUp:NO];
+//            self.isInSignInMode = (shouldReverse) ? NO : YES;
+//        }];
+//        
+//        [self.signInButton.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
+//    }
+//}
 
 -(void)animateBookLabel:(BOOL)shouldReverse
 {
-    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
-    positionAnimation.toValue = (shouldReverse) ? @(initialBukY) : @(self.bukLabel.frame.origin.y - 34);
+    NSString *bukAnim = @"bukAnim";
+    
+    [self.signInButton.layer removeAnimationForKey:bukAnim];
+    
+    POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerTranslationY];
+    
+    positionAnimation.toValue = (shouldReverse) ? @0 : @-60;
     positionAnimation.velocity = @5;
-    positionAnimation.springBounciness = 14;
-    [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
-    }];
-    [self.bukLabel.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
-
+    positionAnimation.springBounciness = 10;
+    
+    [self.bukView.layer pop_addAnimation:positionAnimation forKey:bukAnim];
 }
 
--(void)fadeInTableViewAnimation:(BOOL)shouldReverse
+-(void)fadeInTableViewAnimation:(BOOL)shouldReverse isSignUp:(BOOL) isSignUp
 {
     if(shouldReverse)
         [self.view endEditing:YES];
+    
     POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    
     opacityAnimation.toValue = (shouldReverse) ? @(0) : @(1);
+    
     [opacityAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
         if(!shouldReverse)
-            [self.firstResponderTextField becomeFirstResponder];
+            [self.signInEmail becomeFirstResponder];
     }];
     
-    [self.tableView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation"];
-    [self.closeButton.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation"];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView
-         cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    TextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TextFieldCell"];
-    if(cell == nil)
-        cell = [[TextFieldCell alloc]init];
-
-    if(indexPath.row == 0){
-        if(tableView == self.tableView){
-            cell.cellTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-            self.firstResponderTextField = cell.cellTextField;
-        }else{
-            cell.createAccountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"full name" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-            self.firstResponderTextField = cell.createAccountTextField;
-        }
-    }else if(indexPath.row == 1){
-        if(tableView == self.tableView){
-            cell.cellTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-        }else{
-            cell.createAccountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"email" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-        }
+    if(isSignUp){
+//        [self.createAcctTableView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation"];
     }else{
-        cell.createAccountTextField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"password" attributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]}];
-   
+        [self.signInView.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation"];
     }
     
-    
-    return cell;
+   }
+
+//animations for signup
+
+-(void)startAnimationsSignUp:(BOOL)shouldReverse
+{
+    if(!self.isInSignUpMode){
+        [self animateBookLabel:shouldReverse];
+        
+        if(shouldReverse)
+            [self fadeInTableViewAnimation:shouldReverse isSignUp:YES];
+        
+        POPSpringAnimation *positionAnimation = [POPSpringAnimation animationWithPropertyNamed:kPOPLayerPositionY];
+        
+//        positionAnimation.toValue = (shouldReverse) ? @(CGRectGetMaxY(self.signInButton.frame) + 34)
+//                                                    : @(CGRectGetMaxY(self.createAcctTableView.frame) + 34);
+        
+        positionAnimation.velocity = @5;
+        positionAnimation.springBounciness = 10;
+        
+        [positionAnimation setCompletionBlock:^(POPAnimation *animation, BOOL finished) {
+           
+            if(!shouldReverse)
+                [self fadeInTableViewAnimation: shouldReverse isSignUp:YES];
+            
+            self.isInSignUpMode = (shouldReverse) ? NO : YES;
+            
+        }];
+        
+        [self.signUpButton.layer pop_addAnimation:positionAnimation forKey:@"positionAnimation"];
+        [self fadeOutOrInSignInButton:shouldReverse];
+    }
 }
+
+-(void)fadeOutOrInSignInButton:(BOOL)fadeIn
+{
+    POPBasicAnimation *opacityAnimation = [POPBasicAnimation animationWithPropertyNamed:kPOPLayerOpacity];
+    opacityAnimation.toValue = (fadeIn) ? @(1) : @(0);
+    
+    [self.signInButton.layer pop_addAnimation:opacityAnimation forKey:@"opacityAnimation"];
+}
+
 
 @end
